@@ -4,8 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -14,21 +13,18 @@ import java.time.LocalDate;
 public class Actividad {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_actividad", nullable = false)
-    private Integer id;
+    private Long id;
 
-    @Lob
-    @Column(name = "descripcion", nullable = false)
+    @Column(nullable = false, length = 1000)
     private String descripcion;
 
-    @Column(name = "tiempo_horas", nullable = false, precision = 5, scale = 2)
-    private BigDecimal tiempoHoras;
+    @Column(name = "tiempo_minutos", nullable = false)
+    private Integer tiempoMinutos;
 
     @Column(name = "fecha_actividad", nullable = false)
-    private LocalDate fechaActividad;
+    private LocalDateTime fechaActividad = LocalDateTime.now();
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "fk_asignacion", nullable = false)
-    private Asignacion fkAsignacion;
-
+    @JoinColumn(name = "asignacion_id", nullable = false)
+    private Asignacion asignacion;
 }

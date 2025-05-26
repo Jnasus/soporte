@@ -3,8 +3,8 @@ package com.utp.soporte.digital.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
 
+import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -15,22 +15,25 @@ import java.util.Set;
 public class Asignacion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_asignacion", nullable = false)
-    private Integer id;
+    private Long id;
 
-    @ColumnDefault("0")
-    @Column(name = "coordinador")
-    private Boolean coordinador;
+    @Column(name = "fecha_asignacion", nullable = false)
+    private LocalDateTime fechaAsignacion = LocalDateTime.now();
+
+    @Column(name = "fecha_ultima_actividad")
+    private LocalDateTime fechaUltimaActividad;
+
+    @Column(name = "es_coordinador")
+    private Boolean esCoordinador = false;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "fk_solicitud", nullable = false)
-    private Solicitud fkSolicitud;
+    @JoinColumn(name = "solicitud_id", nullable = false)
+    private Solicitud solicitud;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "fk_colaborador", nullable = false)
-    private Colaborador fkColaborador;
+    @JoinColumn(name = "colaborador_id", nullable = false)
+    private Colaborador colaborador;
 
-    @OneToMany(mappedBy = "fkAsignacion")
-    private Set<Actividad> actividads = new LinkedHashSet<>();
-
+    @OneToMany(mappedBy = "asignacion")
+    private Set<Actividad> actividades = new LinkedHashSet<>();
 }

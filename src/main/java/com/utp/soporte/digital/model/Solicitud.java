@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -16,30 +16,52 @@ import java.util.Set;
 public class Solicitud {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_solicitud", nullable = false)
-    private Integer id;
+    private Long id;
 
     @Column(name = "fecha_registro", nullable = false)
-    private LocalDate fechaRegistro;
+    private LocalDateTime fechaRegistro = LocalDateTime.now();
 
-    @Lob
-    @Column(name = "tipo", nullable = false)
-    private String tipo;
+    @Column(name = "fecha_cierre")
+    private LocalDateTime fechaCierre;
 
-    @Lob
-    @Column(name = "motivo", nullable = false)
+    @Column(nullable = false)
+    private String titulo;
+
+    @Column(nullable = false, length = 1000)
+    private String descripcion;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private TipoSolicitud tipo;
+
+    @Column(nullable = false, length = 1000)
     private String motivo;
 
-    @ColumnDefault("'ABIERTA'")
-    @Lob
-    @Column(name = "estado")
-    private String estado;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    @ColumnDefault("'PENDIENTE'")
+    private EstadoSolicitud estado = EstadoSolicitud.PENDIENTE;
+
+    @Column(name = "rating_servicio")
+    private Integer ratingServicio;
+
+    @Column(name = "comentario_rating", length = 500)
+    private String comentarioRating;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "fk_cliente", nullable = false)
-    private Cliente fkCliente;
+    @JoinColumn(name = "cliente_id", nullable = false)
+    private Cliente cliente;
 
-    @OneToMany(mappedBy = "fkSolicitud")
-    private Set<Asignacion> asignacions = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "solicitud")
+    private Set<Asignacion> asignaciones = new LinkedHashSet<>();
 
+    @OneToMany(mappedBy = "solicitud")
+    private Set<SolicitudHistorial> historial = new LinkedHashSet<>();
+
+    @Column(name = "tiempo_resolucion_minutos")
+    private Long tiempoResolucionMinutos;
+
+    @Column(name = "prioridad", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Prioridad prioridad = Prioridad.MEDIA;
 }

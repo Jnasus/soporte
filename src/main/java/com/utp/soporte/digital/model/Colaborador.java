@@ -14,20 +14,30 @@ import java.util.Set;
 public class Colaborador {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_colaborador", nullable = false)
-    private Integer id;
+    private Long id;
 
-    @Column(name = "nombre", nullable = false, length = 100)
+    @Column(nullable = false, length = 100)
     private String nombre;
 
-    @Column(name = "email", nullable = false, length = 100)
-    private String email;
+    @Column(nullable = false, length = 100)
+    private String apellido;
 
-    @Lob
-    @Column(name = "rol", nullable = false)
-    private String rol;
+    @Column(length = 20)
+    private String telefono;
 
-    @OneToMany(mappedBy = "fkColaborador")
-    private Set<Asignacion> asignacions = new LinkedHashSet<>();
+    @Column(length = 100)
+    private String especialidad;
 
+    @Column(name = "rating_promedio")
+    private Double ratingPromedio = 0.0;
+
+    @Column(name = "tickets_resueltos")
+    private Integer ticketsResueltos = 0;
+
+    @OneToOne(optional = false)
+    @JoinColumn(name = "usuario_id", nullable = false, unique = true)
+    private Usuario usuario;
+
+    @OneToMany(mappedBy = "colaborador")
+    private Set<Asignacion> asignaciones = new LinkedHashSet<>();
 }
