@@ -1,58 +1,76 @@
 package com.utp.soporte.digital.service;
 
 import com.utp.soporte.digital.dto.SolicitudDTO;
-import com.utp.soporte.digital.mapper.SolicitudMapper;
+import com.utp.soporte.digital.model.Cliente;
 import com.utp.soporte.digital.model.Solicitud;
+import com.utp.soporte.digital.repository.ClienteRepository;
 import com.utp.soporte.digital.repository.SolicitudRepository;
-import lombok.RequiredArgsConstructor;
+import com.utp.soporte.digital.mapper.SolicitudMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
+@Transactional
 public class SolicitudService {
+
     private final SolicitudRepository solicitudRepository;
+    private final ClienteRepository clienteRepository;
     private final SolicitudMapper solicitudMapper;
 
-    @Transactional(readOnly = true)
+    @Autowired
+    public SolicitudService(SolicitudRepository solicitudRepository, 
+                          ClienteRepository clienteRepository,
+                          SolicitudMapper solicitudMapper) {
+        this.solicitudRepository = solicitudRepository;
+        this.clienteRepository = clienteRepository;
+        this.solicitudMapper = solicitudMapper;
+    }
+
     public List<SolicitudDTO> findAll() {
-        return solicitudRepository.findAll().stream()
-                .map(solicitudMapper::toDto)
-                .collect(Collectors.toList());
+        return solicitudMapper.toDTOList(solicitudRepository.findAll());
     }
 
-    @Transactional(readOnly = true)
-    public SolicitudDTO findById(Long id) {
+    public Optional<SolicitudDTO> findById(Long id) {
         return solicitudRepository.findById(id)
-                .map(solicitudMapper::toDto)
-                .orElseThrow(() -> new RuntimeException("Solicitud no encontrada"));
+                .map(solicitudMapper::toDto);
     }
 
-    @Transactional(readOnly = true)
-    public List<SolicitudDTO> findByClienteId(Long clienteId) {
-        return solicitudRepository.findByClienteId(clienteId).stream()
-                .map(solicitudMapper::toDto)
-                .collect(Collectors.toList());
-    }
-
-    @Transactional(readOnly = true)
-    public List<SolicitudDTO> findByColaboradorId(Long colaboradorId) {
-        return solicitudRepository.findByAsignacionesColaboradorId(colaboradorId).stream()
-                .map(solicitudMapper::toDto)
-                .collect(Collectors.toList());
-    }
-
-    @Transactional
     public SolicitudDTO save(SolicitudDTO solicitudDTO) {
+        Cliente cliente = clienteRepository.findById(solicitudDTO.getClienteId())
+                .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
+
         Solicitud solicitud = solicitudMapper.toEntity(solicitudDTO);
+        solicitud.setCliente(cliente);
+        solicitud.setFechaCreacion(LocalDateTime.now());
+        
         solicitud = solicitudRepository.save(solicitud);
         return solicitudMapper.toDto(solicitud);
     }
 
-    @Transactional
+    public Optional<SolicitudDTO> update(Long id, SolicitudDTO solicitudDTO) {
+        if (!solicitudRepository.existsById(id)) {
+            return Optional.empty();
+        }
+
+        Solicitud solicitud = solicitudMapper.toEntity(solicitudDTO);
+        solicitud.setId(id);
+        solicitud.setFechaActualizacion(LocalDateTime.now());
+
+        if (solicitudDTO.getClienteId() != null) {
+            Cliente cliente = clienteRepository.findById(solicitudDTO.getClienteId())
+                    .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
+            solicitud.setCliente(cliente);
+        }
+
+        solicitud = solicitudRepository.save(solicitud);
+        return Optional.of(solicitudMapper.toDto(solicitud));
+    }
+
     public void deleteById(Long id) {
         solicitudRepository.deleteById(id);
     }

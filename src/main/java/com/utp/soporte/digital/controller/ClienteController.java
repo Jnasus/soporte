@@ -22,14 +22,14 @@ public class ClienteController {
     private ClienteService clienteService;
 
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Operation(summary = "Obtener todos los clientes", description = "Requiere rol de ADMIN")
     public ResponseEntity<List<ClienteDTO>> findAll() {
         return ResponseEntity.ok(clienteService.findAll());
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Operation(summary = "Obtener un cliente por ID")
     public ResponseEntity<ClienteDTO> findById(@PathVariable Long id) {
         return clienteService.findById(id)
@@ -38,14 +38,14 @@ public class ClienteController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Operation(summary = "Crear un nuevo cliente")
     public ResponseEntity<ClienteDTO> create(@RequestBody ClienteDTO clienteDTO) {
         return ResponseEntity.ok(clienteService.save(clienteDTO));
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Operation(summary = "Actualizar un cliente existente")
     public ResponseEntity<ClienteDTO> update(@PathVariable Long id, @RequestBody ClienteDTO clienteDTO) {
         return clienteService.update(id, clienteDTO)
@@ -54,7 +54,7 @@ public class ClienteController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Operation(summary = "Eliminar un cliente", description = "Requiere rol de ADMIN")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         clienteService.deleteById(id);

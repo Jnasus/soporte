@@ -1,11 +1,16 @@
--- Contraseña: password123 (BCrypt encoded)
+-- Password: admin123 (BCrypt encoded)
 INSERT INTO usuarios (email, password, role, created_at) VALUES
-('admin@demo.pe', '$2a$10$rPiEAgSK0g5hGT/4tlYUp.hy5qVx2h2qHkVZCCUPRYXnRmONJE4e2', 'ADMIN', NOW()),
-('colab@demo.pe', '$2a$10$rPiEAgSK0g5hGT/4tlYUp.hy5qVx2h2qHkVZCCUPRYXnRmONJE4e2', 'COLABORADOR', NOW()),
-('client@demo.pe', '$2a$10$rPiEAgSK0g5hGT/4tlYUp.hy5qVx2h2qHkVZCCUPRYXnRmONJE4e2', 'CLIENTE', NOW());
+('admin@demo.pe', '$2a$10$LMytKQ.ZIXmj/k6TzXPHzeC3Yxv1xUyIWXxoMTuHFKKmN3RBD9iGG', 'ROLE_ADMIN', NOW()),
+('colab@demo.pe', '$2a$10$LMytKQ.ZIXmj/k6TzXPHzeC3Yxv1xUyIWXxoMTuHFKKmN3RBD9iGG', 'ROLE_COLABORADOR', NOW()),
+('client@demo.pe', '$2a$10$LMytKQ.ZIXmj/k6TzXPHzeC3Yxv1xUyIWXxoMTuHFKKmN3RBD9iGG', 'ROLE_CLIENTE', NOW());
 
--- Crear registros de colaborador y cliente
-INSERT INTO colaborador (nombre, apellido, especialidad, usuario_id) 
-SELECT 'Juan', 'Perez', 'Soporte Tecnico', id 
+-- Create client records
+INSERT INTO clientes (nombre, apellido, email, telefono, area_departamento, usuario_id) 
+SELECT 'Juan', 'Cliente', email, '987654321', 'Ventas', id
+FROM usuarios WHERE email = 'client@demo.pe';
+
+-- Create collaborator records
+INSERT INTO colaborador (nombre, apellido, especialidad, telefono, usuario_id) 
+SELECT 'Pedro', 'Tecnico', 'Soporte Tecnico', '123456789', id
 FROM usuarios WHERE email = 'colab@demo.pe';
 

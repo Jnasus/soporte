@@ -2,20 +2,30 @@ package com.utp.soporte.digital.service;
 
 import com.utp.soporte.digital.dto.ClienteDTO;
 import com.utp.soporte.digital.model.Cliente;
+import com.utp.soporte.digital.model.Usuario;
 import com.utp.soporte.digital.mapper.ClienteMapper;
 import com.utp.soporte.digital.repository.ClienteRepository;
-import lombok.RequiredArgsConstructor;
+import com.utp.soporte.digital.repository.UsuarioRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class ClienteService {
 
     private final ClienteRepository clienteRepository;
+    private final UsuarioRepository usuarioRepository;
     private final ClienteMapper clienteMapper;
+
+    @Autowired
+    public ClienteService(ClienteRepository clienteRepository, UsuarioRepository usuarioRepository, ClienteMapper clienteMapper) {
+        this.clienteRepository = clienteRepository;
+        this.usuarioRepository = usuarioRepository;
+        this.clienteMapper = clienteMapper;
+    }
 
     public List<ClienteDTO> findAll() {
         return clienteMapper.toDTOList(clienteRepository.findAll());
@@ -23,26 +33,45 @@ public class ClienteService {
 
     public Optional<ClienteDTO> findById(Long id) {
         return clienteRepository.findById(id)
-                .map(clienteMapper::toDTO);
+                .map(clienteMapper::toDto);
     }
 
+    @Transactional
     public ClienteDTO save(ClienteDTO clienteDTO) {
+        if (clienteDTO.getUsuarioId() == null) {
+            throw new IllegalArgumentException("El ID del usuario es requerido");
+        }
+
+        Usuario usuario = usuarioRepository.findById(clienteDTO.getUsuarioId())
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado con ID: " + clienteDTO.getUsuarioId()));
+
         Cliente cliente = clienteMapper.toEntity(clienteDTO);
+        cliente.setUsuario(usuario);
         cliente = clienteRepository.save(cliente);
-        return clienteMapper.toDTO(cliente);
+        return clienteMapper.toDto(cliente);
     }
 
     public void deleteById(Long id) {
         clienteRepository.deleteById(id);
     }
 
+    @Transactional
     public Optional<ClienteDTO> update(Long id, ClienteDTO clienteDTO) {
         if (!clienteRepository.existsById(id)) {
             return Optional.empty();
         }
+
+        if (clienteDTO.getUsuarioId() == null) {
+            throw new IllegalArgumentException("El ID del usuario es requerido");
+        }
+
+        Usuario usuario = usuarioRepository.findById(clienteDTO.getUsuarioId())
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado con ID: " + clienteDTO.getUsuarioId()));
+
         Cliente cliente = clienteMapper.toEntity(clienteDTO);
         cliente.setId(id);
+        cliente.setUsuario(usuario);
         cliente = clienteRepository.save(cliente);
-        return Optional.of(clienteMapper.toDTO(cliente));
+        return Optional.of(clienteMapper.toDto(cliente));
     }
 } 

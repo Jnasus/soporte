@@ -1,16 +1,5 @@
 package com.utp.soporte.digital.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.Getter;
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
 public class ColaboradorDTO {
     private Long id;
     private String nombre;
@@ -21,6 +10,23 @@ public class ColaboradorDTO {
     private Integer ticketsResueltos;
     private Long usuarioId;
     private String email;
+
+    public ColaboradorDTO() {
+    }
+
+    public ColaboradorDTO(Long id, String nombre, String apellido, String telefono, 
+                         String especialidad, Double ratingPromedio, Integer ticketsResueltos, 
+                         Long usuarioId, String email) {
+        this.id = id;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.telefono = telefono;
+        this.especialidad = especialidad;
+        this.ratingPromedio = ratingPromedio;
+        this.ticketsResueltos = ticketsResueltos;
+        this.usuarioId = usuarioId;
+        this.email = email;
+    }
 
     public Long getId() {
         return id;
@@ -93,6 +99,19 @@ public class ColaboradorDTO {
     public void setEmail(String email) {
         this.email = email;
     }
-    
-    
+
+    @Override
+    public String toString() {
+        return "ColaboradorDTO{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", apellido='" + apellido + '\'' +
+                ", telefono='" + telefono + '\'' +
+                ", especialidad='" + especialidad + '\'' +
+                ", ratingPromedio=" + ratingPromedio +
+                ", ticketsResueltos=" + ticketsResueltos +
+                ", usuarioId=" + usuarioId +
+                ", email='" + email + '\'' +
+                '}';
+    }
 } 

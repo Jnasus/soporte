@@ -2,17 +2,54 @@ package com.utp.soporte.digital.mapper;
 
 import com.utp.soporte.digital.dto.ColaboradorDTO;
 import com.utp.soporte.digital.model.Colaborador;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingConstants;
+import org.springframework.stereotype.Component;
+import java.util.List;
+import java.util.stream.Collectors;
 
-@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
-public interface ColaboradorMapper {
-    @Mapping(source = "usuario.id", target = "usuarioId")
-    @Mapping(source = "usuario.email", target = "email")
-    ColaboradorDTO toDto(Colaborador colaborador);
+@Component
+public class ColaboradorMapper {
 
-    @Mapping(target = "usuario", ignore = true)
-    @Mapping(target = "asignaciones", ignore = true)
-    Colaborador toEntity(ColaboradorDTO dto);
+    public ColaboradorDTO toDto(Colaborador colaborador) {
+        if (colaborador == null) {
+            return null;
+        }
+
+        return new ColaboradorDTO(
+            colaborador.getId(),
+            colaborador.getNombre(),
+            colaborador.getApellido(),
+            colaborador.getTelefono(),
+            colaborador.getEspecialidad(),
+            colaborador.getRatingPromedio(),
+            colaborador.getTicketsResueltos(),
+            colaborador.getUsuario() != null ? colaborador.getUsuario().getId() : null,
+            colaborador.getUsuario() != null ? colaborador.getUsuario().getEmail() : null
+        );
+    }
+
+    public Colaborador toEntity(ColaboradorDTO dto) {
+        if (dto == null) {
+            return null;
+        }
+
+        Colaborador colaborador = new Colaborador();
+        colaborador.setId(dto.getId());
+        colaborador.setNombre(dto.getNombre());
+        colaborador.setApellido(dto.getApellido());
+        colaborador.setTelefono(dto.getTelefono());
+        colaborador.setEspecialidad(dto.getEspecialidad());
+        colaborador.setRatingPromedio(dto.getRatingPromedio());
+        colaborador.setTicketsResueltos(dto.getTicketsResueltos());
+        // Usuario and asignaciones are handled separately by the service layer
+        return colaborador;
+    }
+
+    public List<ColaboradorDTO> toDtoList(List<Colaborador> colaboradores) {
+        if (colaboradores == null) {
+            return null;
+        }
+        return colaboradores.stream()
+                .map(this::toDto)
+                .collect(Collectors.toList());
+    }
 } 

@@ -1,17 +1,9 @@
 package com.utp.soporte.digital.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "clientes")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class Cliente {
 
     @Id
@@ -32,6 +24,22 @@ public class Cliente {
 
     @Column(name = "area_departamento")
     private String areaDepartamento;
+
+    @OneToOne(optional = false)
+    @JoinColumn(name = "usuario_id", nullable = false, unique = true)
+    private Usuario usuario;
+
+    public Cliente() {
+    }
+
+    public Cliente(Long id, String nombre, String apellido, String email, String telefono, String areaDepartamento) {
+        this.id = id;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.email = email;
+        this.telefono = telefono;
+        this.areaDepartamento = areaDepartamento;
+    }
 
     public Long getId() {
         return id;
@@ -79,5 +87,26 @@ public class Cliente {
 
     public void setAreaDepartamento(String areaDepartamento) {
         this.areaDepartamento = areaDepartamento;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    @Override
+    public String toString() {
+        return "Cliente{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", apellido='" + apellido + '\'' +
+                ", email='" + email + '\'' +
+                ", telefono='" + telefono + '\'' +
+                ", areaDepartamento='" + areaDepartamento + '\'' +
+                ", usuario=" + (usuario != null ? usuario.getId() : null) +
+                '}';
     }
 } 

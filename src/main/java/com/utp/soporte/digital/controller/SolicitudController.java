@@ -5,23 +5,23 @@ import com.utp.soporte.digital.service.SolicitudService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @RestController
 @RequestMapping("/api/v1/solicitudes")
-@RequiredArgsConstructor
 @Tag(name = "Solicitudes", description = "API para gestionar solicitudes de soporte")
 @SecurityRequirement(name = "bearerAuth")
 public class SolicitudController {
     
-    @Autowired
-    private SolicitudService solicitudService;
+    private final SolicitudService solicitudService;
+
+    public SolicitudController(SolicitudService solicitudService) {
+        this.solicitudService = solicitudService;
+    }
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
@@ -34,14 +34,9 @@ public class SolicitudController {
     @PreAuthorize("hasAnyRole('ADMIN', 'COLABORADOR') or @solicitudService.findById(#id).clienteId == authentication.principal.id")
     @Operation(summary = "Obtener una solicitud por ID")
     public ResponseEntity<SolicitudDTO> findById(@PathVariable Long id) {
-        return ResponseEntity.ok(solicitudService.findById(id));
-    }
-
-    @GetMapping("/mis-solicitudes")
-    @PreAuthorize("hasRole('CLIENTE')")
-    @Operation(summary = "Obtener las solicitudes del cliente autenticado")
-    public ResponseEntity<List<SolicitudDTO>> findByClienteId(@RequestParam Long clienteId) {
-        return ResponseEntity.ok(solicitudService.findByClienteId(clienteId));
+        return solicitudService.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
@@ -55,8 +50,9 @@ public class SolicitudController {
     @PreAuthorize("hasRole('ADMIN') or @solicitudService.findById(#id).clienteId == authentication.principal.id")
     @Operation(summary = "Actualizar una solicitud existente")
     public ResponseEntity<SolicitudDTO> update(@PathVariable Long id, @RequestBody SolicitudDTO solicitudDTO) {
-        solicitudDTO.setId(id);
-        return ResponseEntity.ok(solicitudService.save(solicitudDTO));
+        return solicitudService.update(id, solicitudDTO)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")

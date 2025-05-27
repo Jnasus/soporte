@@ -1,35 +1,36 @@
 package com.utp.soporte.digital.dto;
 
-import com.utp.soporte.digital.model.EstadoSolicitud;
-import com.utp.soporte.digital.model.Prioridad;
-import com.utp.soporte.digital.model.TipoSolicitud;
-import lombok.Data;
-
 import java.time.LocalDateTime;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
 public class SolicitudDTO {
     private Long id;
-    private LocalDateTime fechaRegistro;
-    private LocalDateTime fechaCierre;
     private String titulo;
     private String descripcion;
-    private TipoSolicitud tipo;
-    private String motivo;
-    private EstadoSolicitud estado;
-    private Integer ratingServicio;
-    private String comentarioRating;
+    private String estado;
+    private String prioridad;
     private Long clienteId;
     private String clienteNombre;
-    private Long tiempoResolucionMinutos;
-    private Prioridad prioridad;
+    private LocalDateTime fechaCreacion;
+    private LocalDateTime fechaActualizacion;
+    private LocalDateTime fechaCierre;
+
+    public SolicitudDTO() {
+    }
+
+    public SolicitudDTO(Long id, String titulo, String descripcion, String estado, String prioridad,
+                       Long clienteId, String clienteNombre, LocalDateTime fechaCreacion,
+                       LocalDateTime fechaActualizacion, LocalDateTime fechaCierre) {
+        this.id = id;
+        this.titulo = titulo;
+        this.descripcion = descripcion;
+        this.estado = estado;
+        this.prioridad = prioridad;
+        this.clienteId = clienteId;
+        this.clienteNombre = clienteNombre;
+        this.fechaCreacion = fechaCreacion;
+        this.fechaActualizacion = fechaActualizacion;
+        this.fechaCierre = fechaCierre;
+    }
 
     public Long getId() {
         return id;
@@ -37,22 +38,6 @@ public class SolicitudDTO {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public LocalDateTime getFechaRegistro() {
-        return fechaRegistro;
-    }
-
-    public void setFechaRegistro(LocalDateTime fechaRegistro) {
-        this.fechaRegistro = fechaRegistro;
-    }
-
-    public LocalDateTime getFechaCierre() {
-        return fechaCierre;
-    }
-
-    public void setFechaCierre(LocalDateTime fechaCierre) {
-        this.fechaCierre = fechaCierre;
     }
 
     public String getTitulo() {
@@ -71,44 +56,20 @@ public class SolicitudDTO {
         this.descripcion = descripcion;
     }
 
-    public TipoSolicitud getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(TipoSolicitud tipo) {
-        this.tipo = tipo;
-    }
-
-    public String getMotivo() {
-        return motivo;
-    }
-
-    public void setMotivo(String motivo) {
-        this.motivo = motivo;
-    }
-
-    public EstadoSolicitud getEstado() {
+    public String getEstado() {
         return estado;
     }
 
-    public void setEstado(EstadoSolicitud estado) {
+    public void setEstado(String estado) {
         this.estado = estado;
     }
 
-    public Integer getRatingServicio() {
-        return ratingServicio;
+    public String getPrioridad() {
+        return prioridad;
     }
 
-    public void setRatingServicio(Integer ratingServicio) {
-        this.ratingServicio = ratingServicio;
-    }
-
-    public String getComentarioRating() {
-        return comentarioRating;
-    }
-
-    public void setComentarioRating(String comentarioRating) {
-        this.comentarioRating = comentarioRating;
+    public void setPrioridad(String prioridad) {
+        this.prioridad = prioridad;
     }
 
     public Long getClienteId() {
@@ -127,19 +88,43 @@ public class SolicitudDTO {
         this.clienteNombre = clienteNombre;
     }
 
-    public Long getTiempoResolucionMinutos() {
-        return tiempoResolucionMinutos;
+    public LocalDateTime getFechaCreacion() {
+        return fechaCreacion;
     }
 
-    public void setTiempoResolucionMinutos(Long tiempoResolucionMinutos) {
-        this.tiempoResolucionMinutos = tiempoResolucionMinutos;
+    public void setFechaCreacion(LocalDateTime fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
     }
 
-    public Prioridad getPrioridad() {
-        return prioridad;
+    public LocalDateTime getFechaActualizacion() {
+        return fechaActualizacion;
     }
 
-    public void setPrioridad(Prioridad prioridad) {
-        this.prioridad = prioridad;
+    public void setFechaActualizacion(LocalDateTime fechaActualizacion) {
+        this.fechaActualizacion = fechaActualizacion;
+    }
+
+    public LocalDateTime getFechaCierre() {
+        return fechaCierre;
+    }
+
+    public void setFechaCierre(LocalDateTime fechaCierre) {
+        this.fechaCierre = fechaCierre;
+    }
+
+    @Override
+    public String toString() {
+        return "SolicitudDTO{" +
+                "id=" + id +
+                ", titulo='" + titulo + '\'' +
+                ", descripcion='" + descripcion + '\'' +
+                ", estado='" + estado + '\'' +
+                ", prioridad='" + prioridad + '\'' +
+                ", clienteId=" + clienteId +
+                ", clienteNombre='" + clienteNombre + '\'' +
+                ", fechaCreacion=" + fechaCreacion +
+                ", fechaActualizacion=" + fechaActualizacion +
+                ", fechaCierre=" + fechaCierre +
+                '}';
     }
 } 
