@@ -29,10 +29,6 @@ public class Colaborador {
     @Column(name = "tickets_resueltos")
     private Integer ticketsResueltos = 0;
 
-    @OneToOne(optional = false)
-    @JoinColumn(name = "usuario_id", nullable = false, unique = true)
-    private Usuario usuario;
-
     @OneToMany(mappedBy = "colaborador")
     private Set<Asignacion> asignaciones = new LinkedHashSet<>();
 
@@ -95,14 +91,6 @@ public class Colaborador {
         this.ticketsResueltos = ticketsResueltos;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-
     public Set<Asignacion> getAsignaciones() {
         return asignaciones;
     }
@@ -121,7 +109,6 @@ public class Colaborador {
                 ", especialidad='" + especialidad + '\'' +
                 ", ratingPromedio=" + ratingPromedio +
                 ", ticketsResueltos=" + ticketsResueltos +
-                ", usuario=" + (usuario != null ? usuario.getId() : null) +
                 ", asignaciones=" + asignaciones.size() +
                 '}';
     }

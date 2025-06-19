@@ -33,13 +33,6 @@ public class ColaboradorService {
                 .orElseThrow(() -> new RuntimeException("Colaborador no encontrado"));
     }
 
-    @Transactional(readOnly = true)
-    public ColaboradorDTO findByUsuarioId(Long usuarioId) {
-        return colaboradorRepository.findByUsuarioId(usuarioId)
-                .map(colaboradorMapper::toDto)
-                .orElseThrow(() -> new RuntimeException("Colaborador no encontrado"));
-    }
-
     @Transactional
     public ColaboradorDTO save(ColaboradorDTO colaboradorDTO) {
         Colaborador colaborador = colaboradorMapper.toEntity(colaboradorDTO);

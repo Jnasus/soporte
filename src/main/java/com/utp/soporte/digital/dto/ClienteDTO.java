@@ -7,19 +7,17 @@ public class ClienteDTO {
     private String email;
     private String telefono;
     private String areaDepartamento;
-    private Long usuarioId;
 
     public ClienteDTO() {
     }
 
-    public ClienteDTO(Long id, String nombre, String apellido, String email, String telefono, String areaDepartamento, Long usuarioId) {
+    public ClienteDTO(Long id, String nombre, String apellido, String email, String telefono, String areaDepartamento) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
         this.email = email;
         this.telefono = telefono;
         this.areaDepartamento = areaDepartamento;
-        this.usuarioId = usuarioId;
     }
 
     public Long getId() {
@@ -70,14 +68,6 @@ public class ClienteDTO {
         this.areaDepartamento = areaDepartamento;
     }
 
-    public Long getUsuarioId() {
-        return usuarioId;
-    }
-
-    public void setUsuarioId(Long usuarioId) {
-        this.usuarioId = usuarioId;
-    }
-
     @Override
     public String toString() {
         return "ClienteDTO{" +
@@ -87,7 +77,6 @@ public class ClienteDTO {
                 ", email='" + email + '\'' +
                 ", telefono='" + telefono + '\'' +
                 ", areaDepartamento='" + areaDepartamento + '\'' +
-                ", usuarioId=" + usuarioId +
                 '}';
     }
 } 

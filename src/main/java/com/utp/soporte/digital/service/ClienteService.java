@@ -38,15 +38,7 @@ public class ClienteService {
 
     @Transactional
     public ClienteDTO save(ClienteDTO clienteDTO) {
-        if (clienteDTO.getUsuarioId() == null) {
-            throw new IllegalArgumentException("El ID del usuario es requerido");
-        }
-
-        Usuario usuario = usuarioRepository.findById(clienteDTO.getUsuarioId())
-                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado con ID: " + clienteDTO.getUsuarioId()));
-
         Cliente cliente = clienteMapper.toEntity(clienteDTO);
-        cliente.setUsuario(usuario);
         cliente = clienteRepository.save(cliente);
         return clienteMapper.toDto(cliente);
     }
@@ -60,17 +52,8 @@ public class ClienteService {
         if (!clienteRepository.existsById(id)) {
             return Optional.empty();
         }
-
-        if (clienteDTO.getUsuarioId() == null) {
-            throw new IllegalArgumentException("El ID del usuario es requerido");
-        }
-
-        Usuario usuario = usuarioRepository.findById(clienteDTO.getUsuarioId())
-                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado con ID: " + clienteDTO.getUsuarioId()));
-
         Cliente cliente = clienteMapper.toEntity(clienteDTO);
         cliente.setId(id);
-        cliente.setUsuario(usuario);
         cliente = clienteRepository.save(cliente);
         return Optional.of(clienteMapper.toDto(cliente));
     }

@@ -25,10 +25,6 @@ public class Cliente {
     @Column(name = "area_departamento")
     private String areaDepartamento;
 
-    @OneToOne(optional = false)
-    @JoinColumn(name = "usuario_id", nullable = false, unique = true)
-    private Usuario usuario;
-
     public Cliente() {
     }
 
@@ -89,14 +85,6 @@ public class Cliente {
         this.areaDepartamento = areaDepartamento;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-
     @Override
     public String toString() {
         return "Cliente{" +
@@ -106,7 +94,6 @@ public class Cliente {
                 ", email='" + email + '\'' +
                 ", telefono='" + telefono + '\'' +
                 ", areaDepartamento='" + areaDepartamento + '\'' +
-                ", usuario=" + (usuario != null ? usuario.getId() : null) +
                 '}';
     }
 } 

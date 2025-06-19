@@ -8,15 +8,12 @@ public class ColaboradorDTO {
     private String especialidad;
     private Double ratingPromedio;
     private Integer ticketsResueltos;
-    private Long usuarioId;
-    private String email;
 
     public ColaboradorDTO() {
     }
 
     public ColaboradorDTO(Long id, String nombre, String apellido, String telefono, 
-                         String especialidad, Double ratingPromedio, Integer ticketsResueltos, 
-                         Long usuarioId, String email) {
+                         String especialidad, Double ratingPromedio, Integer ticketsResueltos) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -24,8 +21,6 @@ public class ColaboradorDTO {
         this.especialidad = especialidad;
         this.ratingPromedio = ratingPromedio;
         this.ticketsResueltos = ticketsResueltos;
-        this.usuarioId = usuarioId;
-        this.email = email;
     }
 
     public Long getId() {
@@ -84,22 +79,6 @@ public class ColaboradorDTO {
         this.ticketsResueltos = ticketsResueltos;
     }
 
-    public Long getUsuarioId() {
-        return usuarioId;
-    }
-
-    public void setUsuarioId(Long usuarioId) {
-        this.usuarioId = usuarioId;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     @Override
     public String toString() {
         return "ColaboradorDTO{" +
@@ -110,8 +89,6 @@ public class ColaboradorDTO {
                 ", especialidad='" + especialidad + '\'' +
                 ", ratingPromedio=" + ratingPromedio +
                 ", ticketsResueltos=" + ticketsResueltos +
-                ", usuarioId=" + usuarioId +
-                ", email='" + email + '\'' +
                 '}';
     }
 } 

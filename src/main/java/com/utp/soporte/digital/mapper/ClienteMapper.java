@@ -20,8 +20,7 @@ public class ClienteMapper {
             cliente.getApellido(),
             cliente.getEmail(),
             cliente.getTelefono(),
-            cliente.getAreaDepartamento(),
-            cliente.getUsuario() != null ? cliente.getUsuario().getId() : null
+            cliente.getAreaDepartamento()
         );
     }
 

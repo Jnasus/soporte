@@ -21,9 +21,7 @@ public class ColaboradorMapper {
             colaborador.getTelefono(),
             colaborador.getEspecialidad(),
             colaborador.getRatingPromedio(),
-            colaborador.getTicketsResueltos(),
-            colaborador.getUsuario() != null ? colaborador.getUsuario().getId() : null,
-            colaborador.getUsuario() != null ? colaborador.getUsuario().getEmail() : null
+            colaborador.getTicketsResueltos()
         );
     }
 

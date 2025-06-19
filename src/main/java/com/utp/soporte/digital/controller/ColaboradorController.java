@@ -29,7 +29,7 @@ public class ColaboradorController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN') or @colaboradorService.findById(#id).usuarioId == authentication.principal.id")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Obtener un colaborador por ID")
     public ResponseEntity<ColaboradorDTO> findById(@PathVariable Long id) {
         return ResponseEntity.ok(colaboradorService.findById(id));
